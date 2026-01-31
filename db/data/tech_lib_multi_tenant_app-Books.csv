@@ -1,0 +1,6 @@
+ID;title;isbn;publicationDate;genre;author_ID
+5ebc5455-f2d6-472e-af6f-3b68e544b6ee;Pride and Prejudice;978-3-16-148410-0;1813-01-28;Classic;5ebc5455-f2d6-472e-af6f-3b68e544b6ee
+c5090612-244e-4cf5-99f4-eb22cba2c4c1;Adventures of Huckleberry Finn;978-0-14-243717-9;1884-02-18;Classic;c5090612-244e-4cf5-99f4-eb22cba2c4c1
+10238591-2b1d-4f04-86ff-1d861f17da92;1984;978-0-452-28423-4;1949-06-08;Dystopian;10238591-2b1d-4f04-86ff-1d861f17da92
+b7c342a1-21b3-45ef-bcc7-93f6a69cc95d;Harry Potter and the Philosopher's Stone;978-0-7475-3274-0;1997-06-26;Fantasy;b7c342a1-21b3-45ef-bcc7-93f6a69cc95d
+fcdcd458-9815-445f-bc3b-84a0089e112c;The Shining;978-0-385-12167-5;1977-01-28;Horror;fcdcd458-9815-445f-bc3b-84a0089e112c
