@@ -22,7 +22,11 @@ File or Folder | Purpose
 
 ### API samples - 
 
-http://localhost:4004/service/tech_lib_multi_tenant_app/Books(ID='5ebc5455-f2d6-472e-af6f-3b68e544b6ee',IsActiveEntity=true)?$expand=bookAuthors($expand=author)
+1. http://localhost:4004/service/tech_lib_multi_tenant_app/Books?$expand=bookAuthors
+
+2. http://localhost:4004/service/tech_lib_multi_tenant_app/Books(ID='5ebc5455-f2d6-472e-af6f-3b68e544b6ee',IsActiveEntity=true)?$expand=bookAuthors($expand=author)
+
+
 
 ## Learn More
 
