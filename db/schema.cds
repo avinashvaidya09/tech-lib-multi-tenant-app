@@ -7,7 +7,7 @@ entity Books : cuid {
   isbn: String(20);
   publicationDate: Date;
   genre: String(50);
-  author: Association to Authors;
+  bookAuthors: Association to many BookAuthors on bookAuthors.book = $self;
 }
 
 @assert.unique: { name: [name] }
@@ -15,6 +15,10 @@ entity Authors : cuid {
   name: String(100) @mandatory;
   bio: String(500);
   birthDate: Date;
-  books: Association to many Books on books.author = $self;
+  bookAuthors: Association to many BookAuthors on bookAuthors.author = $self;
 }
 
+entity BookAuthors : cuid {
+  book  : Association to Books;
+  author: Association to Authors;
+}

@@ -20,6 +20,10 @@ File or Folder | Purpose
 - Start adding content, for example, a [db/schema.cds](db/schema.cds).
 
 
+### API samples - 
+
+http://localhost:4004/service/tech_lib_multi_tenant_app/Books(ID='5ebc5455-f2d6-472e-af6f-3b68e544b6ee',IsActiveEntity=true)?$expand=bookAuthors($expand=author)
+
 ## Learn More
 
 Learn more at https://cap.cloud.sap/docs/get-started/.

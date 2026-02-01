@@ -7,4 +7,6 @@ service tech_lib_multi_tenant_appSrv {
   entity Books as projection on my.Books;
   @odata.draft.enabled
   entity Authors as projection on my.Authors;
+  @odata.draft.enabled
+  entity BookAuthors as projection on my.BookAuthors;
 }
