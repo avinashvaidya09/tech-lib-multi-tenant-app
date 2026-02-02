@@ -5,23 +5,33 @@ annotate service.Books with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Label : 'title',
+                Label : '{i18n>Title1}',
                 Value : title,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'isbn',
+                Label : '{i18n>Isbn1}',
                 Value : isbn,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'publicationDate',
+                Label : '{i18n>Publicationdate1}',
                 Value : publicationDate,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'genre',
+                Label : '{i18n>Genre1}',
                 Value : genre,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : bookAuthors.author.name,
+                Label : '{i18n>Name1}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : bookAuthors.author.bio,
+                Label : '{i18n>Bio}',
             },
         ],
     },
@@ -36,22 +46,22 @@ annotate service.Books with @(
     UI.LineItem : [
         {
             $Type : 'UI.DataField',
-            Label : 'title',
+            Label : '{i18n>Title}',
             Value : title,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'isbn',
+            Label : '{i18n>Isbn}',
             Value : isbn,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'publicationDate',
+            Label : '{i18n>Publicationdate}',
             Value : publicationDate,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'genre',
+            Label : '{i18n>Genre}',
             Value : genre,
         },
     ],
