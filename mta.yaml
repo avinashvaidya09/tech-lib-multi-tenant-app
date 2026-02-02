@@ -9,6 +9,7 @@ build-parameters:
     - builder: custom
       commands:
         - npm ci
+        - npm run build:mtar:prep
         - npx cds build --production
 modules:
   - name: tech-lib-multi-tenant-app-srv

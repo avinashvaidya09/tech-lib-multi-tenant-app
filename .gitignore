@@ -39,3 +39,6 @@ build/dist/
 env/
 
 .vscode
+
+dist/
+resources/

@@ -25,7 +25,10 @@
     "start-local": "npm run generate-entry-point && npm run cds-watch",
     "generate-entry-point": "dev-cap-tools gen-entrypoint",
     "cds-watch": "cds watch --open",
-    "watch-tech-library": "cds watch --open ns.techlibrary/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-tech-library": "cds watch --open ns.techlibrary/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "build:ui": "npm run build --workspace=tech-library",
+    "copy:ui": "rm -rf app/router/resources/tech-library && mkdir -p app/router/resources/tech-library && cp -R app/tech-library/dist/. app/router/resources/tech-library/",
+    "build:mtar:prep": "npm run build:ui && npm run copy:ui"
   },
   "private": true,
   "cds": {
