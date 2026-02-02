@@ -1,6 +1,47 @@
 {
-  "scopes": [],
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.library_user",
+      "description": "Library User Scope"
+    },
+    {
+      "name": "$XSAPPNAME.library_admin_user",
+      "description": "Library Admin User Scope"
+    }
+  ],
   "attributes": [],
-  "role-templates": [],
+  "role-templates": [
+    {
+      "name": "LibraryUser",
+      "description": "Role template for library users",
+      "scope-references": [
+        "$XSAPPNAME.library_user"
+      ]
+    },
+    {
+      "name": "LibraryAdminUser",
+      "description": "Role template for library administrators",
+      "scope-references": [
+        "$XSAPPNAME.library_admin_user"
+      ]
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "LibraryUsers",
+      "description": "Library Users",
+      "role-template-references": [
+        "LibraryUser"
+      ]
+    },
+    {
+      "name": "LibraryAdminUsers",
+      "description": "Library Admin Users",
+      "role-template-references": [
+        "LibraryAdminUser",
+        "LibraryUser"
+      ]
+    }
+  ],
   "authorities-inheritance": false
 }
