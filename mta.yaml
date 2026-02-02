@@ -64,14 +64,8 @@ resources:
       service-plan: application
       path: ./xs-security.json
       config:
-        xsappname: tech-lib-multi-tenant-app-${org}-${space}
+        xsappname: tech-lib-multi-tenant-app-auth
         tenant-mode: dedicated
-        oauth2-configuration:
-          credential-types:
-            - "binding-secret"
-            - "x509"
-          redirect-uris:
-            - https://*~{app-api/app-uri}/**
     requires:
       - name: app-api
   - name: tech-lib-multi-tenant-app-db

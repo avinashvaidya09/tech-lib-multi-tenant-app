@@ -12,6 +12,13 @@
       "destination": "srv-api",
       "csrfProtection": true,
       "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^/service/(.*)$",
+      "target": "/service/$1",
+      "destination": "srv-api",
+      "csrfProtection": true,
+      "authenticationType": "xsuaa"
     }
   ]
 }

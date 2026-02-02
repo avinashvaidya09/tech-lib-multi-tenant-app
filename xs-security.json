@@ -26,22 +26,5 @@
       ]
     }
   ],
-  "role-collections": [
-    {
-      "name": "LibraryUsers",
-      "description": "Library Users",
-      "role-template-references": [
-        "LibraryUser"
-      ]
-    },
-    {
-      "name": "LibraryAdminUsers",
-      "description": "Library Admin Users",
-      "role-template-references": [
-        "LibraryAdminUser",
-        "LibraryUser"
-      ]
-    }
-  ],
   "authorities-inheritance": false
 }
