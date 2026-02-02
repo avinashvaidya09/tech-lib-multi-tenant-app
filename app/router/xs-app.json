@@ -1,6 +1,12 @@
 {
   "routes": [
     {
+      "source": "^/$",
+      "target": "/index.html",
+      "localDir": "resources/tech-library",
+      "authenticationType": "xsuaa"
+    },
+    {
       "source": "^/tech-library/(.*)$",
       "target": "$1",
       "localDir": "resources/tech-library",
