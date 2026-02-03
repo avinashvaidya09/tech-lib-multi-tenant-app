@@ -27,14 +27,6 @@ modules:
     requires:
       - name: tech-lib-multi-tenant-app-auth
       - name: tech-lib-multi-tenant-app-db
-
-  - name: tech-lib-multi-tenant-app-db-deployer
-    type: hdb
-    path: gen/db
-    parameters:
-      buildpack: nodejs_buildpack
-    requires:
-      - name: tech-lib-multi-tenant-app-db
   - name: tech-lib-multi-tenant-app
     type: approuter.nodejs
     path: app/router
@@ -50,11 +42,50 @@ modules:
           url: ~{srv-url}
           forwardAuthToken: true
       - name: tech-lib-multi-tenant-app-auth
+      - name: mtx-api
+        group: destinations
+        properties:
+          name: mtx-api # must be used in xs-app.json as well
+          url: ~{mtx-url}
     provides:
       - name: app-api
         properties:
           app-protocol: ${protocol}
           app-uri: ${default-uri}
+    properties:
+      TENANT_HOST_PATTERN: "^(.*)-${default-uri}"
+
+  - name: tech-lib-multi-tenant-app-mtx
+    type: nodejs
+    path: gen/mtx/sidecar
+    requires:
+      - name: tech-lib-multi-tenant-app-auth
+      - name: tech-lib-multi-tenant-app-db
+      - name: tech-lib-multi-tenant-app-registry
+      - name: app-api
+        properties:
+          SUBSCRIPTION_URL: ~{app-protocol}://\${tenant_subdomain}-~{app-uri}
+    build-parameters:
+      builder: npm-ci
+    parameters:
+      instances: 1
+      memory: 256M
+      disk-quota: 512M
+    hooks:
+      - name: upgrade-all
+        type: task
+        phases:
+          - blue-green.application.before-start.idle
+          - deploy.application.before-start
+        parameters:
+          name: upgrade
+          memory: 512M # increase as required
+          disk-quota: 768M # increase as required
+          command: cds-mtx upgrade '*'
+    provides:
+      - name: mtx-api
+        properties:
+          mtx-url: ${default-url}
 
 resources:
   - name: tech-lib-multi-tenant-app-auth
@@ -65,11 +96,37 @@ resources:
       path: ./xs-security.json
       config:
         xsappname: tech-lib-multi-tenant-app-auth
-        tenant-mode: dedicated
+        tenant-mode: shared
+        oauth2-configuration:
+          credential-types:
+            - "binding-secret"
+            - "x509"
+          redirect-uris:
+            - https://*~{app-api/app-uri}/**
     requires:
       - name: app-api
   - name: tech-lib-multi-tenant-app-db
-    type: com.sap.xs.hdi-container
+    type: org.cloudfoundry.managed-service
     parameters:
-      service: hana
-      service-plan: hdi-shared
+      service: service-manager
+      service-plan: container
+  - name: tech-lib-multi-tenant-app-registry
+    type: org.cloudfoundry.managed-service
+    requires:
+      - name: mtx-api
+    parameters:
+      service: saas-registry
+      service-plan: application
+      config:
+        xsappname: tech-lib-multi-tenant-app-${org}-${space}
+        appName: tech-lib-multi-tenant-app-${org}-${space}
+        displayName: tech-lib-multi-tenant-app
+        description: A simple CAP project.
+        category: 'Category'
+        appUrls:
+          getDependencies: ~{mtx-api/mtx-url}/-/cds/saas-provisioning/dependencies
+          onSubscription: ~{mtx-api/mtx-url}/-/cds/saas-provisioning/tenant/{tenantId}
+          onSubscriptionAsync: true
+          onUnSubscriptionAsync: true
+          onUpdateDependenciesAsync: true
+          callbackTimeoutMillis: 300000 # Increase if your deployments are taking longer than that

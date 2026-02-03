@@ -8,6 +8,7 @@
     "@sap-cloud-sdk/http-client": "^4.4.0",
     "@sap-cloud-sdk/util": "^4.4.0",
     "@sap/cds": "^9",
+    "@sap/cds-mtxs": "^3",
     "@sap/low-code-event-handler": "^1.2.5",
     "@sap/xsenv": "^3.3.2",
     "@sap/xssec": "^4",
@@ -35,23 +36,50 @@
     "requires": {
       "[production]": {
         "db": "hana",
-        "auth": "xsuaa"
+        "auth": "xsuaa",
+        "multitenancy": true
       },
       "auth": {
         "[development]": {
-          "kind": "dummy"
+          "kind": "mocked",
+          "users": {
+            "yves": {
+              "scopes": [
+                "internal-user"
+                
+              ] 
+            },
+            "bob": {
+              "tenant": "t1",
+              "scopes": [
+                "libraryuser",
+                "libraryadminuser"
+              ] 
+            },
+            "john": {
+              "tenant": "t2",
+              "scopes": [
+                "libraryuser",
+                "libraryadminuser"
+              ] 
+            }
+          }
         },
         "[production]": {
-          "kind": "xsuaa"
+            "kind": "xsuaa"
+          }
+        },
+        "[with-mtx]": {
+          "multitenancy": true
         }
-      }
-    }
-  },
-  "lcap": true,
-  "workspaces": [
-    "app/*"
-  ],
-  "sapux": [
-    "app/tech-library"
-  ]
-}
+      },
+      "profile": "with-mtx-sidecar"
+    },
+    "lcap": true,
+    "workspaces": [
+      "app/*"
+    ],
+    "sapux": [
+      "app/tech-library"
+    ]
+  }
