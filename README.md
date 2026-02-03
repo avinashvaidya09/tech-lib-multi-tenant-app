@@ -86,6 +86,10 @@ cds add multitenancy
 	- [mta.yaml](mta.yaml):
 		- Adds an MTX sidecar module (provides `mtx-api`) and wires approuter and SaaS provisioning callbacks.
 		- Sets approuter destinations to reach the MTX; 
+        - Sets tenant host pattern in the app router module so that requests run in the tenant context
+            ```bash
+            TENANT_HOST_PATTERN: "^(.*)-${default-uri}"
+            ```
         - Changes `xsuaa` tenant mode from `dedicated` to `shared`
         - Adds `service-manager` for tenant isolation.
         - Adds `saas-registry` service used for onboarding/subscription on BTP.
@@ -167,6 +171,7 @@ cds add multitenancy
 
 	
 
-## Learn More
+## References
 
-Learn more at https://cap.cloud.sap/docs/get-started/.
+1. https://cap.cloud.sap/docs/get-started/
+2. https://cap.cloud.sap/docs/guides/multitenancy/#enable-multitenancy
