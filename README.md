@@ -69,6 +69,8 @@ cf deploy mta_archives/tech-lib-multi-tenant-app_*.mtar
 
 - After deployment, open the approuter route from `cf apps`. If authentication is enabled, ensure your user has the required XSUAA role (e.g., `LibraryUser`).
 
+## What is Multi tenancy?
+
 
 ## Adding Multitenancy and testing on local
 
@@ -169,8 +171,77 @@ cds add multitenancy
 
 **If you have reached till this point, you have successfully enabled multitenancy in your CAP project and tested it locally.**
 
-cf map-route ‹app› ‹paasDomain› --hostname ‹subscriberSubdomain›-‹saasAppName›
-cf map-route tlar cfapps.us10.hana.ondemand.com --hostname integration-gtis8hzz-btp-na-practice-sandbox-ggbtlvwv-demo-tlar
+## Deploying the Multi-Tenant Application on SAP BTP
+
+Follow these steps to deploy the multi-tenant application on SAP Business Technology Platform (BTP):
+
+### Prerequisites
+1. Ensure you have the following tools installed:
+   - [Cloud Foundry CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html)
+   - [MultiApps CF CLI Plugin](https://github.com/cloudfoundry-incubator/multiapps-cli-plugin)
+   - Node.js (compatible version as per the project requirements)
+   - MBT (Multi-Target Application Build Tool)
+2. Log in to your SAP BTP provider subaccount and ensure you have the necessary permissions to deploy applications.
+3. Open terminal and set up your Cloud Foundry space and organization 
+
+### Steps to deploy application in provider account
+
+1. **Build the MTA Archive**
+   Run the following command to build the Multi-Target Application (MTA) archive:
+   ```bash
+   mbt build
+   ```
+   This will generate an `.mtar` file in the `mta_archives` directory.
+
+2. **Deploy the MTA Archive**
+   Use the Cloud Foundry CLI to deploy the generated `.mtar` file:
+   ```bash
+   cf deploy mta_archives/tech-lib-multi-tenant-app_1.0.0.mtar
+   ```
+
+3. **Verify the Deployment**
+   After the deployment is complete, verify that the application is running:
+   ```bash
+   cf apps
+   ```
+   Check the status of the deployed application and ensure it is in the `STARTED` state.
+
+4. **Subscribe to the multi tenant application**
+   - To subscribe to the SaaS application, go to - `Instances and Subscriptions` - `Create`.
+   - In the drop down, you will see application `Technical Library`. Select `default` plan. Click `Create`.
+   - Once the application is successfully subscribed you will see the application in `Subscriptions` as shown in below screenshot
+   ![App Subscription](/assets/images/app-subscription.png)
+   - Go to `Security` - `Role Collections` - Create a new role collection `<name of your choice>` - Assign roles - `LibraryAdminUser`
+   - Assign this role collection to your user in the subscriber tenant.
+
+5. **Go to Provider sub account**
+	- Open the dev space. Go to `Routes`
+	- Here, you have to add a new route of the subscriber subaccount - `Create Route`
+	- Select the `Domain`.
+	- Select the `Host Name` (This will be the `subscriber subdomain` + `saas app name`)
+	- Map this newly created route with the app router application.
+
+	- You can do the above steps by `cf` command as well as shown below
+	```bash
+	cf map-route ‹app› ‹paasDomain› --hostname ‹subscriberSubdomain›-‹saasAppName› 
+
+	example:
+	cf map-route tlar cfapps.<region>.hana.ondemand.com --hostname subscriber1-btp-america-sandbox-ggbtlvwv-demo-tlar
+	```
+
+6. **Test the Application**
+   - Access the application URL provided.
+   - Verify that the application works as expected for the subscriber tenant.
+   - If you see in the provider subaccount, you will see a new schema / HDI container gets created for each subscriber.
+
+### Troubleshooting
+- If the deployment fails, check the logs using:
+  ```bash
+  cf logs <app-name> --recent
+  ```
+- Ensure all required services are bound to the application and properly configured in the `xs-security.json`.
+
+
 ## References
 
 1. https://cap.cloud.sap/docs/get-started/
