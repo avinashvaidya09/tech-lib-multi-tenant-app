@@ -207,6 +207,8 @@ Follow these steps to deploy the multi-tenant application on SAP Business Techno
    Check the status of the deployed application and ensure it is in the `STARTED` state.
 
 4. **Subscribe to the multi tenant application**
+   - Once the application is successfully published to the `saas-registry`, you will be able to see the application in the `Service Marketplace` section as shown in the below screenshot
+   ![Saas Registry](/assets/images/service-marketplace.png)
    - To subscribe to the SaaS application, go to - `Instances and Subscriptions` - `Create`.
    - In the drop down, you will see application `Technical Library`. Select `default` plan. Click `Create`.
    - Once the application is successfully subscribed you will see the application in `Subscriptions` as shown in below screenshot
