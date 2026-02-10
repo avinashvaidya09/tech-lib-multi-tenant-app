@@ -1,7 +1,7 @@
 _schema-version: 3.3.0
 ID: tech-lib-multi-tenant-app
 version: 1.0.0
-description: "A simple CAP project."
+description: "CAP Project for library of technical books."
 parameters:
   enable-parallel-deployments: true
 build-parameters:
@@ -27,7 +27,7 @@ modules:
     requires:
       - name: tech-lib-multi-tenant-app-auth
       - name: tech-lib-multi-tenant-app-db
-  - name: tech-lib-multi-tenant-app
+  - name: tlar # technical library approuter. I am using 'tlar' as name to avoid hostname length issues during mapping routes in CF
     type: approuter.nodejs
     path: app/router
     parameters:
@@ -118,11 +118,11 @@ resources:
       service: saas-registry
       service-plan: application
       config:
-        xsappname: tech-lib-multi-tenant-app-${org}-${space}
-        appName: tech-lib-multi-tenant-app-${org}-${space}
-        displayName: tech-lib-multi-tenant-app
-        description: A simple CAP project.
-        category: 'Category'
+        xsappname: tech-lib-multi-tenant-app-auth
+        appName: tech-lib-multi-tenant-app-${space}
+        displayName: Technical Library
+        description: Tech. Library Multi-Tenant Application
+        category: 'Other'
         appUrls:
           getDependencies: ~{mtx-api/mtx-url}/-/cds/saas-provisioning/dependencies
           onSubscription: ~{mtx-api/mtx-url}/-/cds/saas-provisioning/tenant/{tenantId}

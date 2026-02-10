@@ -169,8 +169,8 @@ cds add multitenancy
 
 **If you have reached till this point, you have successfully enabled multitenancy in your CAP project and tested it locally.**
 
-	
-
+cf map-route ‹app› ‹paasDomain› --hostname ‹subscriberSubdomain›-‹saasAppName›
+cf map-route tlar cfapps.us10.hana.ondemand.com --hostname integration-gtis8hzz-btp-na-practice-sandbox-ggbtlvwv-demo-tlar
 ## References
 
 1. https://cap.cloud.sap/docs/get-started/
