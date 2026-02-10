@@ -9,7 +9,7 @@
     "@sap/cds": "^9",
     "@sap/cds-mtxs": "^3",
     "@sap/low-code-event-handler": "^1.2.5",
-    "@sap/xsenv": "^3.3.2",
+    "@sap/xsenv": "^4",
     "@sap/xssec": "^4",
     "express": "^4",
     "hdb": "^2.26.4",
