@@ -248,3 +248,62 @@ Follow these steps to deploy the multi-tenant application on SAP Business Techno
 
 1. https://cap.cloud.sap/docs/get-started/
 2. https://cap.cloud.sap/docs/guides/multitenancy/#enable-multitenancy
+
+
+### Temporary
+
+### 
+
+```mermaid
+flowchart
+  DEV[Provider deploys MTAR] --> CF[Cloud Foundry deploy]
+
+  CF --> SRV[CAP Application]
+  CF --> AR[App router]
+  CF --> XSUAA[XSUAA tenant mode shared]
+  CF --> HDBDEP[HDI deployer module]
+  CF --> MTX[MTX sidecar]
+  CF --> SAAS[SaaS provisioning service saas registry]
+  
+  HDBDEP --> HANA[HANA HDI Container]
+```
+
+
+```mermaid
+flowchart
+  SUBACC[Subscriber subaccount] --> SAAS[SaaS provisioning service saas registry]
+  SAAS -->|getDependencies callback| MTX[MTX sidecar]
+  SAAS -->|onSubscription callback| MTX
+
+  MTX --> SM[Service manager]
+  SM --> HANA[HANA HDI Container Per Tenant]
+
+  MTX --> DM[Deployment Service + Model Provider]
+  DM --> HANA
+
+  MTX --> SUBURL[Subscriber tenant URL]
+```
+
+
+```mermaid
+flowchart
+  SUBUSR[Subscriber user] --> SUBURL[Subscriber tenant URL]
+
+  SUBURL --> AR[App router]
+  AR -->|Extract tenant from host| TEN[Tenant identifier]
+
+  AR --> XSUAA[XSUAA tenant mode shared]
+  XSUAA -->|Authorization code| AR
+  
+
+  AR -->|Forward token| SRV[CAP service]
+
+  SRV -->|Read tenant from JWT| TENJWT[Tenant from token]
+  TENJWT --> MTX[MTX sidecar]
+  MTX -->|Tenant DB credentials| SRV
+
+  SRV --> HANA[HANA HDI Container Per Tenant]
+  HANA --> SRV
+  SRV --> AR
+  AR --> SUBUSR
+```

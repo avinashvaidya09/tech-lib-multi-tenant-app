@@ -26,7 +26,7 @@ modules:
           srv-url: ${default-url}
     requires:
       - name: tech-lib-multi-tenant-app-auth
-      - name: tech-lib-multi-tenant-app-db
+      - name: tech-lib-multi-tenant-app-sm
   - name: tlar # technical library approuter. I am using 'tlar' as name to avoid hostname length issues during mapping routes in CF
     type: approuter.nodejs
     path: app/router
@@ -60,7 +60,7 @@ modules:
     path: gen/mtx/sidecar
     requires:
       - name: tech-lib-multi-tenant-app-auth
-      - name: tech-lib-multi-tenant-app-db
+      - name: tech-lib-multi-tenant-app-sm
       - name: tech-lib-multi-tenant-app-registry
       - name: app-api
         properties:
@@ -105,7 +105,7 @@ resources:
             - https://*~{app-api/app-uri}/**
     requires:
       - name: app-api
-  - name: tech-lib-multi-tenant-app-db
+  - name: tech-lib-multi-tenant-app-sm
     type: org.cloudfoundry.managed-service
     parameters:
       service: service-manager
