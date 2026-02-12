@@ -22,9 +22,9 @@ File or Folder | Purpose
 
 - Clone the repo.
 
-- You can enhance the entity model, for example, a [db/schema.cds](db/schema.cds).
+- You can enhance the entity model, for example, a [db/schema.cds](db/schema.cds)
 
-- Install dependencies.
+- Install dependencies
 ```bash
 npm install
 ```
@@ -67,21 +67,21 @@ mbt build
 cf deploy mta_archives/tech-lib-multi-tenant-app_*.mtar
 ```
 
-- If authentication is enabled, ensure your user has the required XSUAA role (e.g., `LibraryUser`).
+- If authentication is enabled, ensure your user has the required XSUAA role (e.g., `LibraryUser`)
 
 - After deployment, open the approuter URL from `cf apps`. 
 
 ## What is Multitenancy?
 
-Before jumping into the code, I would like to briefly touch the concept of multitenant architecture.
+Before jumping into the code, I would like to briefly touch the concept of multitenant architecture
 
 In multitenant architecture - 
 
-1. A single instance of the application and server resources serve multiple customers/tenants.
+1. A single instance of the application and server resources serve multiple customers/tenants
 
-2. This optimizes the compute resource usage as all subscribers are pointing to the same instance of the application.
+2. This optimizes the compute resource usage as all subscribers are pointing to the same instance of the application
 
-3. Data in the database is kept separate based on tenant specific schema ensuring data privacy.
+3. Data in the database is kept separate based on tenant specific schema ensuring data privacy
 
 The below diagram gives a simple representation of how multitenant applications are different from single tenant
 
@@ -94,74 +94,74 @@ In this section, I will explain three perspectives
 
 1. What happens when a provider deploys application on the provider subaccount
 
-2. What happens when a subscriber subscribes the application in the subscriber subaccount.
+2. What happens when a subscriber subscribes the application in the subscriber subaccount
 
-3. What happens when customer open the application using subscriber specific URL.
+3. What happens when customer open the application using subscriber specific URL
 
 Let us go through the above points in detail
 
 ### When provider deploys application on the provider subaccount
 
-The diagram below outlines the key components and steps involved when deploying a multitenant application on the SAP BTP Cloud Foundry runtime.
+The diagram below outlines the key components and steps involved when deploying a multitenant application on the SAP BTP Cloud Foundry runtime
 
 ![Provider Subaccount Perspective](/assets/images/provider_subaccount_perspective.png)
 
-1. Provider packages and deploys the MTAR: Developer builds the CAP project (srv + UI) and deploy it to the provider Cloud Foundry space.
+1. Provider packages and deploys the MTAR: Developer builds the CAP project (srv + UI) and deploy it to the provider Cloud Foundry space
 
-2. CF deploy creates the runtime apps: The deployment pushes your CAP application (srv) and App Router as CF apps with routes.
+2. CF deploy creates the runtime apps: The deployment pushes your CAP application (srv) and App Router as CF apps with routes
 
-3. CF deploy provisions platform services: It also creates/binds the XSUAA instance (tenant mode shared) for authentication and a Service Manager instance to orchestrate tenant database provisioning.
+3. CF deploy provisions platform services: It also creates/binds the XSUAA instance (tenant mode shared) for authentication and a Service Manager instance to orchestrate tenant database provisioning
 
-4. MTX sidecar is deployed alongside srv: The MTX sidecar microservice is pushed as a separate CF app to handle (subscription/onboarding/offboarding) tenant lifecycle operations.
+4. MTX sidecar is deployed alongside srv: The MTX sidecar microservice is pushed as a separate CF app to handle (subscription/onboarding/offboarding) tenant lifecycle operations
 
-5. SaaS registry is configured to call MTX: The SaaS provisioning service instance is created with callback URLs (onSubscription/getDependencies) that point to the MTX sidecar endpoints.
+5. SaaS registry is configured to call MTX: The SaaS provisioning service instance is created with callback URLs (onSubscription/getDependencies) that point to the MTX sidecar endpoints
 
-6. Technical tenant t0 is prepared for multitenancy metadata: MTX initializes a technical persistence area (often referred to as t0) to store tenant registry/runtime metadata (like your tenant records).
+6. Technical tenant t0 is prepared for multitenancy metadata: MTX initializes a technical persistence area (often referred to as t0) to store tenant registry/runtime metadata (like your tenant records)
 
 ### When subscriber subscribes the application in the subscriber subaccount
 
-The diagram below outlines the key components and steps involved when a subscriber subscribes to a multitenant application.
+The diagram below outlines the key components and steps involved when a subscriber subscribes to a multitenant application
 
 ![Subscriber Subaccount Perspective](/assets/images/subscriber_subaccount_perspective.png)
 
-1. Subscriber initiates subscription: The subscriber subaccount subscribes to the provider’s SaaS application, which triggers the SaaS provisioning service (SaaS Registry).
+1. Subscriber initiates subscription: The subscriber subaccount subscribes to the provider’s SaaS application, which triggers the SaaS provisioning service (SaaS Registry)
 
-2. SaaS Registry calls MTX callbacks: SaaS Registry calls the MTX sidecar’s getDependencies endpoint (if there are any dependencies to be installed), then triggers onSubscription to start tenant onboarding.
+2. SaaS Registry calls MTX callbacks: SaaS Registry calls the MTX sidecar’s getDependencies endpoint (if there are any dependencies to be installed), then triggers onSubscription to start tenant onboarding
 
-3. MTX registers the tenant in t0: MTX writes/updates tenant registry metadata in the technical tenant t0 (for example, tenant entry and subscription context).
+3. MTX registers the tenant in t0: MTX writes/updates tenant registry metadata in the technical tenant t0 (for example, tenant entry and subscription context)
 
-4. MTX requests tenant resources via Service Manager: MTX calls Service Manager to provision the tenant’s database artifacts — typically a dedicated HDI container/schema for that tenant plus a service binding.
+4. MTX requests tenant resources via Service Manager: MTX calls Service Manager to provision the tenant’s database artifacts — typically a dedicated HDI container/schema for that tenant plus a service binding
 
-5. Deployment Service deploys the data model: MTX invokes the Deployment Service + Model Provider to deploy the CAP model into the newly created tenant schema/container.
+5. Deployment Service deploys the data model: MTX invokes the Deployment Service + Model Provider to deploy the CAP model into the newly created tenant schema/container
 
-6. Tenant URL is returned to SaaS Registry: MTX generates/returns the subscriber tenant URL, and SaaS Registry stores it and completes the subscription so the tenant can access the app using that URL.
+6. Tenant URL is returned to SaaS Registry: MTX generates/returns the subscriber tenant URL, and SaaS Registry stores it and completes the subscription so the tenant can access the app using that URL
 
 
-**Note:** Map the subscriber hostname in the app router routes in provider sub account space before accesssing the subscriber specific application url.
+**Note:** Map the subscriber hostname in the app router routes in provider sub account space before accesssing the subscriber specific application url
 
 ### What happens when customer opens subscriber specific application URL
 
-The diagram below outlines the key components and steps involved when a user opens the subscriber specific application URL.
+The diagram below outlines the key components and steps involved when a user opens the subscriber specific application URL
 
 ![Multitenancy User Flow](/assets/images/multitenancy-request-flow.png)
 
-1. User opens the subscriber URL: A subscriber user accesses the application using the subscriber-specific tenant URL, which maps to the provider’s App Router route.
+1. User opens the subscriber URL: A subscriber user accesses the application using the subscriber-specific tenant URL, which maps to the provider’s App Router route
 
-2. App Router derives tenant from the host: App Router inspects the incoming request host/subdomain and determines the tenant identifier associated with that subscriber.
+2. App Router derives tenant from the host: App Router inspects the incoming request host/subdomain and determines the tenant identifier associated with that subscriber
 
-3. App Router initiates authentication with XSUAA: Because the route is protected, App Router redirects the browser to XSUAA (tenant mode shared) to start the OAuth authorization-code flow.
+3. App Router initiates authentication with XSUAA: Because the route is protected, App Router redirects the browser to XSUAA (tenant mode shared) to start the OAuth authorization-code flow
 
-4. XSUAA delegates login to the subscriber’s IdP: XSUAA uses the IdP trust configured in the subscriber subaccount (for example, Okta/IAS) to authenticate the user, then returns an authorization code to App Router’s callback.
+4. XSUAA delegates login to the subscriber’s IdP: XSUAA uses the IdP trust configured in the subscriber subaccount (for example, Okta/IAS) to authenticate the user, then returns an authorization code to App Router’s callback
 
-5. App Router exchanges code for JWT: App Router calls XSUAA’s token endpoint to exchange the authorization code for a JWT access token, then forwards requests to the CAP backend with that token.
+5. App Router exchanges code for JWT: App Router calls XSUAA’s token endpoint to exchange the authorization code for a JWT access token, then forwards requests to the CAP backend with that token
 
-6. CAP resolves tenant from JWT and queries tenant DB: The CAP application reads the tenant context from the JWT, resolves the tenant-specific DB connection/binding (via the MTX layer and Service Manager), and runs the DB query against that tenant’s schema/container.
+6. CAP resolves tenant from JWT and queries tenant DB: The CAP application reads the tenant context from the JWT, resolves the tenant-specific DB connection/binding (via the MTX layer and Service Manager), and runs the DB query against that tenant’s schema/container
 
 ### Now as we know what is multitenancy and the key components, let us understand 
 
 1. How to make your application multi tenant
 2. Test it on local
-3. Deploy on BTP and test.
+3. Deploy on BTP and test
 
 ## Adding Multitenancy and testing on local
 
@@ -171,27 +171,27 @@ The diagram below outlines the key components and steps involved when a user ope
 cds add multitenancy
 ```
 
-- The main component to enable multitenancy is MTX microservice. MTX stands for - Multitenancy, Toggle (features) and Extensibility.
+- The main component to enable multitenancy is MTX microservice. MTX stands for - Multitenancy, Toggle (features) and Extensibility
 
 - The above command makes below changes in the project:
 	- [package.json](package.json):
-		- Adds `@sap/cds-mtxs` and enables multitenancy via `cds.requires` (for production and a local profile like `with-mtx-sidecar`).
+		- Adds `@sap/cds-mtxs` and enables multitenancy via `cds.requires` (for production and a local profile like `with-mtx-sidecar`)
         - Adds `multitenancy:true` for production
-		- Significance: CAP runs each request in a tenant context; mocked users help emulate tenants locally without XSUAA.
+		- Significance: CAP runs each request in a tenant context; mocked users help emulate tenants locally without XSUAA
 	- [mta.yaml](mta.yaml):
-		- Adds an MTX sidecar module (provides `mtx-api`) and wires approuter and SaaS provisioning callbacks.
+		- Adds an MTX sidecar module (provides `mtx-api`) and wires approuter and SaaS provisioning callbacks
 		- Sets approuter destinations to reach the MTX; 
         - Sets tenant host pattern in the app router module so that requests run in the tenant context
             ```bash
             TENANT_HOST_PATTERN: "^(.*)-${default-uri}"
             ```
         - Changes `xsuaa` tenant mode from `dedicated` to `shared`
-        - Adds `service-manager` for tenant isolation.
-        - Adds `saas-registry` service used for onboarding/subscription on BTP.
-		- Significance: Required for SaaS onboarding and per-tenant data provisioning in Cloud Foundry.
+        - Adds `service-manager` for tenant isolation
+        - Adds `saas-registry` service used for onboarding/subscription on BTP
+		- Significance: Required for SaaS onboarding and per-tenant data provisioning in Cloud Foundry
 	- [xs-security.json](xs-security.json):
 		- Added `mtcallback` scope
-		- Significance: Governs authorization and multi-tenant mode in production.
+		- Significance: Governs authorization and multi-tenant mode in production
     - [xs-app.json](/app/router/xs-app.json): Below route is added
         ```bash
             {
@@ -274,7 +274,7 @@ Follow these steps to deploy the multi-tenant application on SAP Business Techno
    - [MultiApps CF CLI Plugin](https://github.com/cloudfoundry-incubator/multiapps-cli-plugin)
    - Node.js (compatible version as per the project requirements)
    - MBT (Multi-Target Application Build Tool)
-2. Log in to your SAP BTP provider subaccount and ensure you have the necessary permissions to deploy applications.
+2. Log in to your SAP BTP provider subaccount and ensure you have the necessary permissions to deploy applications
 3. Open terminal and set up your Cloud Foundry space and organization 
 
 ### Steps to deploy application in provider account
@@ -284,7 +284,7 @@ Follow these steps to deploy the multi-tenant application on SAP Business Techno
    ```bash
    mbt build
    ```
-   This will generate an `.mtar` file in the `mta_archives` directory.
+   This will generate an `.mtar` file in the `mta_archives` directory
 
 2. **Deploy the MTA Archive**
    Use the Cloud Foundry CLI to deploy the generated `.mtar` file:
@@ -297,7 +297,7 @@ Follow these steps to deploy the multi-tenant application on SAP Business Techno
    ```bash
    cf apps
    ```
-   Check the status of the deployed application and ensure it is in the `STARTED` state.
+   Check the status of the deployed application and ensure it is in the `STARTED` state
 
 4. **Subscribe to the multi tenant application**
    - Once the application is successfully published to the `saas-registry`, you will be able to see the application in the `Service Marketplace` section as shown in the below screenshot
@@ -311,7 +311,7 @@ Follow these steps to deploy the multi-tenant application on SAP Business Techno
    ![App Subscription](/assets/images/app-subscription.png)
 
    - Go to `Security` - `Role Collections` - Create a new role collection `<name of your choice>` - Assign roles - `LibraryAdminUser`
-   - Assign this role collection to your user in the subscriber tenant.
+   - Assign this role collection to your user in the subscriber tenant
 
 5. **Go to Provider sub account**
 	- Open the dev space. Go to `Routes`
