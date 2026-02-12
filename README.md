@@ -14,17 +14,17 @@ File or Folder | Purpose
 `xs-security.json` | Application security descriptor
 
 ## Prerequisites:
+- VSCode or BAS
 - Node.js 20+ and npm
 - Cloud Foundry CLI (`cf`) and MultiApps (`mbt`)
-- UI5 CLI (`npm i -g @ui5/cli`) optional for local UI builds
 
 ## Project Set up 
 
-- Clone the repo
+- Clone the repo.
 
 - You can enhance the entity model, for example, a [db/schema.cds](db/schema.cds).
 
-- Install dependencies
+- Install dependencies.
 ```bash
 npm install
 ```
@@ -67,7 +67,9 @@ mbt build
 cf deploy mta_archives/tech-lib-multi-tenant-app_*.mtar
 ```
 
-- After deployment, open the approuter route from `cf apps`. If authentication is enabled, ensure your user has the required XSUAA role (e.g., `LibraryUser`).
+- If authentication is enabled, ensure your user has the required XSUAA role (e.g., `LibraryUser`).
+
+- After deployment, open the approuter URL from `cf apps`. 
 
 ## What is Multitenancy?
 
@@ -327,9 +329,15 @@ Follow these steps to deploy the multi-tenant application on SAP Business Techno
 	```
 
 6. **Test the Application**
-   - Access the application URL provided.
-   - Verify that the application works as expected for the subscriber tenant.
-   - If you see in the provider subaccount, you will see a new schema / HDI container gets created for each subscriber.
+   - Access the application using tenant specific URL. If all is well, you should see application list page as shown below
+
+   ![Application](/assets/images/app_landing_page.png)
+
+   - Verify that the application works as expected for the subscriber tenant
+   - Make changes by editing any record and see if the changes are persisted in the tenant specific schema.
+   - Go to provider subaccount, you will see a new schema / HDI container gets created for each subscriber.
+
+7. **Subscribe to the application from another tenant by repeating the steps 4 and 5**
 
 ### Troubleshooting
 - If the deployment fails, check the logs using:
