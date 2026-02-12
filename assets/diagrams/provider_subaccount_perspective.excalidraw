@@ -6,7 +6,7 @@
     {
       "id": "Lnl0Acb8QWcouIyewrNZW",
       "type": "rectangle",
-      "x": 478.25390625,
+      "x": 478.12109375,
       "y": 145.94921875,
       "width": 1676.859375,
       "height": 721.16796875,
@@ -25,11 +25,11 @@
         "type": 3
       },
       "seed": 1508840863,
-      "version": 187,
-      "versionNonce": 475703473,
+      "version": 189,
+      "versionNonce": 482045339,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1770904363590,
+      "updated": 1770929242574,
       "link": null,
       "locked": false
     },
@@ -11646,7 +11646,7 @@
     {
       "id": "uk_pgLnM6iO8_PDzKcp40",
       "type": "rectangle",
-      "x": 1785.5,
+      "x": 1785.41015625,
       "y": 493.55078125,
       "width": 260,
       "height": 90,
@@ -11665,8 +11665,8 @@
         "type": 3
       },
       "seed": 92457841,
-      "version": 29,
-      "versionNonce": 2016950993,
+      "version": 30,
+      "versionNonce": 118671573,
       "isDeleted": false,
       "boundElements": [
         {
@@ -11678,14 +11678,14 @@
           "type": "arrow"
         }
       ],
-      "updated": 1770904221899,
+      "updated": 1770929234554,
       "link": null,
       "locked": false
     },
     {
       "id": "rRPQu5H8egOFubPsjJ7GO",
       "type": "text",
-      "x": 1794.960105895996,
+      "x": 1794.870262145996,
       "y": 513.55078125,
       "width": 241.0797882080078,
       "height": 50,
@@ -11702,20 +11702,20 @@
       "index": "bk2",
       "roundness": null,
       "seed": 1322923345,
-      "version": 33,
-      "versionNonce": 825231359,
+      "version": 46,
+      "versionNonce": 1122777019,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1770904256899,
+      "updated": 1770929241134,
       "link": null,
       "locked": false,
-      "text": "SaaS provisioning service\n(BTP saas registry)",
+      "text": "SaaS provisioning service\ninstance",
       "fontSize": 20,
       "fontFamily": 5,
       "textAlign": "center",
       "verticalAlign": "middle",
       "containerId": "uk_pgLnM6iO8_PDzKcp40",
-      "originalText": "SaaS provisioning service (BTP saas registry)",
+      "originalText": "SaaS provisioning service\ninstance",
       "autoResize": true,
       "lineHeight": 1.25
     },
