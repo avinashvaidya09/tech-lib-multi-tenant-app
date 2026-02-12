@@ -155,6 +155,12 @@ The diagram below outlines the key components and steps involved when a user ope
 
 6. CAP resolves tenant from JWT and queries tenant DB: The CAP application reads the tenant context from the JWT, resolves the tenant-specific DB connection/binding (via the MTX layer and Service Manager), and runs the DB query against that tenant’s schema/container.
 
+### Now as we know what is multitenancy and the key components, let us understand 
+
+1. How to make your application multi tenant
+2. Test it on local
+3. Deploy on BTP and test.
+
 ## Adding Multitenancy and testing on local
 
 - Enable multitenancy
@@ -293,11 +299,15 @@ Follow these steps to deploy the multi-tenant application on SAP Business Techno
 
 4. **Subscribe to the multi tenant application**
    - Once the application is successfully published to the `saas-registry`, you will be able to see the application in the `Service Marketplace` section as shown in the below screenshot
+
    ![Saas Registry](/assets/images/service-marketplace.png)
+
    - To subscribe to the SaaS application, go to - `Instances and Subscriptions` - `Create`.
    - In the drop down, you will see application `Technical Library`. Select `default` plan. Click `Create`.
    - Once the application is successfully subscribed you will see the application in `Subscriptions` as shown in below screenshot
+
    ![App Subscription](/assets/images/app-subscription.png)
+
    - Go to `Security` - `Role Collections` - Create a new role collection `<name of your choice>` - Assign roles - `LibraryAdminUser`
    - Assign this role collection to your user in the subscriber tenant.
 
@@ -333,3 +343,4 @@ Follow these steps to deploy the multi-tenant application on SAP Business Techno
 
 1. https://cap.cloud.sap/docs/get-started/
 2. https://cap.cloud.sap/docs/guides/multitenancy/#enable-multitenancy
+3. https://help.sap.com/docs/btp/sap-business-technology-platform/developing-multitenant-applications-in-cloud-foundry-environment 
