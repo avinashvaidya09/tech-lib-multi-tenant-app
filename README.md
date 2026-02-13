@@ -1,8 +1,8 @@
 # Getting Started
 
-Welcome to CAP project to demostrate multitenancy design.
+Welcome to CAP project to demostrate multitenancy and SaaS extensibility.
 
-It contains these folders and files, following our recommended project layout:
+It contains these folders and files, following CAPs recommended project layout:
 
 File or Folder | Purpose
 ---------|----------
@@ -18,62 +18,17 @@ File or Folder | Purpose
 - Node.js 20+ and npm
 - Cloud Foundry CLI (`cf`) and MultiApps (`mbt`)
 
-## Project Set up 
-
-- Clone the repo.
-
-- You can enhance the entity model, for example, a [db/schema.cds](db/schema.cds)
-
-- Install dependencies
-```bash
-npm install
-```
-
-## Local build and deploy
-
-- Run the below command
-
-```bash
-cds watch
-```
-
-- CAP backend (OData at `http://localhost:4004/service/tech_lib_multi_tenant_app/`):
-
-- API samples
-
-```bash
-1. http://localhost:4004/service/tech_lib_multi_tenant_app/Books?$expand=bookAuthors
-
-2. http://localhost:4004/service/tech_lib_multi_tenant_app/Books(ID='5ebc5455-f2d6-472e-af6f-3b68e544b6ee',IsActiveEntity=true)?$expand=bookAuthors($expand=author)
-```
-
-## Deploy single tenant app on BTP
-
-- Log in to target your org/space:
-
-```bash
-cf login
-```
-
-- Build MTAR:
-
-```bash
-mbt build
-```
-
-- Deploy to Cloud Foundry:
-
-```bash
-cf deploy mta_archives/tech-lib-multi-tenant-app_*.mtar
-```
-
-- If authentication is enabled, ensure your user has the required XSUAA role (e.g., `LibraryUser`)
-
-- After deployment, open the approuter URL from `cf apps`. 
 
 ## What is Multitenancy?
 
-Before jumping into the code, I would like to briefly touch the concept of multitenant architecture
+Before jumping into the code, I would like to briefly touch the concept of multitenant and it's architecture.
+
+Multitenancy involves two main perspectives
+
+1. **Provider:** Provider is an global account owner who offers SaaS solutions to its consumers.
+2. **Subscriber:** A subscriber of the application provider. It can be a customer, a department or organizational unit. Subscriber users consume the application.
+
+Important point here is that - the provider owns the global account and consumers subaccounts must be in the same global account and region.
 
 In multitenant architecture - 
 
@@ -204,64 +159,60 @@ cds add multitenancy
 
 - Test locally with two tenants
 
-    1) Add mock users mapped to tenants (local only)
+## Project Set up 
 
-	- In [package.json](package.json) under `cds.requires.auth.[development].users` add, for example:
+- Clone the repo.
 
-	```json
-	{
-		"bob": { "tenant": "t1", "scopes": ["libraryuser", "libraryadminuser"] },
-		"john": { "tenant": "t2", "scopes": ["libraryuser"] }
-	}
-	```
+- You can enhance the entity model, for example, a [db/schema.cds](db/schema.cds)
 
-	2) Start MTX sidecar (default: port 4005)
+- Install dependencies
+```bash
+npm install
+```
 
-	```bash
-	cds watch mtx/sidecar
-	```
+## Local build and deploy
 
-	3) Start CAP backend with MTX (default: port 4004)
-
-	```bash
-	cds watch --with-mtx
-	```
-
-	4) Subscribe tenants (use Basic auth expected by the sidecar)
-
-	```bash
-	cds subscribe t1 --to http://localhost:4005 -u yves:
-	cds subscribe t2 --to http://localhost:4005 -u yves:
-	```
-
-    This will create 2 database tenants as you will see in logs of `cds watch mtx/sidecar` terminal
-
-    ```bash
-    /> successfully deployed to db-t1.sqlite...
-    ...
-    ...
-    /> successfully deployed to db-t2.sqlite 
-    ...
-    ```
-
-	5) (If needed) Upgrade tenants to create tables
-
-	```bash
-	# Use either of the following depending on your cds version
-	cds upgrade t1
-	cds upgrade t2
-	```
-
-	6) Open localhost in incognito mode - `http://localhost:4004` and login with `bob`
-
-        - Delete a book `Design Patterns`
-
-        - Open another browser and login with `john`
-
-        - You will still see the book - `Design Patterns`
-
-        - This is because bob and john are using data from different tenants
-
+1) Add mock users mapped to tenants (local only)
+- In [package.json](package.json) under `cds.requires.auth.[development].users` add, for example:
+```json
+{
+	"bob": { "tenant": "t1", "scopes": ["libraryuser", "libraryadminuser"] },
+	"john": { "tenant": "t2", "scopes": ["libraryuser"] }
+}
+```
+2) Start MTX sidecar (default: port 4005)
+```bash
+cds watch mtx/sidecar
+```
+3) Start CAP backend with MTX (default: port 4004)
+```bash
+cds watch --with-mtx
+```
+4) Subscribe tenants (use Basic auth expected by the sidecar)
+```bash
+cds subscribe t1 --to http://localhost:4005 -u yves:
+cds subscribe t2 --to http://localhost:4005 -u yves:
+```
+This will create 2 database tenants as you will see in logs of `cds watch mtx/sidecar` terminal
+```bash
+/> successfully deployed to db-t1.sqlite...
+...
+...
+/> successfully deployed to db-t2.sqlite 
+...
+```
+5) (If needed) Upgrade tenants to create tables
+```bash
+# Use either of the following depending on your cds version
+cds upgrade t1
+cds upgrade t2
+```
+6) Open localhost in incognito mode - `http://localhost:4004`
+    - login with `bob`
+    - Delete a book `Design Patterns`
+    - Open another browser and login with `john`
+    - You will still see the book - `Design Patterns`
+    - This is because bob and john are using data from different tenants
 **If you have reached till this point, you have successfully enabled multitenancy in your CAP project and tested it locally.**
 
 ## Deploying the Multi-Tenant Application on SAP BTP
@@ -325,7 +276,7 @@ Follow these steps to deploy the multi-tenant application on SAP Business Techno
 	cf map-route ‹app› ‹paasDomain› --hostname ‹subscriberSubdomain›-‹saasAppName› 
 
 	example:
-	cf map-route tlar cfapps.<region>.hana.ondemand.com --hostname subscriber1-btp-america-sandbox-ggbtlvwv-demo-tlar
+	cf map-route tlar cfapps.<region>.hana.ondemand.com --hostname subscriber1-btp-usa-sandbox-123456789-demo-tlar
 	```
 
 6. **Test the Application**
