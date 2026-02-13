@@ -42,8 +42,9 @@ The below diagram gives a simple representation of how multitenant applications 
 
 ![Single Tenant vs Multi Tenant](/assets/images/single_vs_multi_tenant.png)
 
+Now as you know "WHAT", let us jump in understanding the "HOW" part.
 
-## How you can achieve multi tenancy on SAP BTP Cloud Foundry Runtime
+## How you can achieve multitenancy on SAP BTP (leveraging cloud foundry runtime)
 
 In this section, I will explain three perspectives 
 
