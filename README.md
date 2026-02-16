@@ -296,7 +296,8 @@ Follow these steps to deploy the multi-tenant application on SAP Business Techno
   ```bash
   cf logs <app-name> --recent
   ```
-- Ensure all required services are bound to the application and properly configured in the `xs-security.json`.
+- Ensure all required services are bound to the application 
+- Roles are properly configured in the `xs-security.json` and associated in the subscriber subaccount.
 
 
 ## References
