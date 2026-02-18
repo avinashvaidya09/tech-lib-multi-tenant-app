@@ -7,6 +7,7 @@ entity Books : cuid {
   isbn: String(20);
   publicationDate: Date;
   genre: String(50);
+  price: Decimal(9,2);
   bookAuthors: Association to many BookAuthors on bookAuthors.book = $self;
 }
 
