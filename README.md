@@ -296,9 +296,10 @@ Follow these steps to deploy the multi-tenant application on SAP Business Techno
   ```bash
   cf logs <app-name> --recent
   ```
-- Ensure all required services are bound to the application 
+- Ensure all required services are bound to the application
+- Map the routes in the provider subaccount. Refer **Go to Provider sub account** section above.
+- the provider owns the global account and consumers subaccounts must be in the same global account and region.
 - Roles are properly configured in the `xs-security.json` and associated in the subscriber subaccount.
-
 
 ## References
 
